@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}Dashboard - Simkopkar{% endblock %}
+{% block content %}
+<div class="max-w-4xl mx-auto bg-white p-8 rounded shadow">
+    <h2 class="text-3xl font-semibold mb-6">Welcome, {{ username }}!</h2>
+    <p class="text-gray-700">This is the dashboard of the Employee Savings and Loan Cooperative and Grocery Sales application.</p>
+    <div class="mt-8 grid grid-cols-1 md:grid-cols-3 gap-6">
+        <a href="{{ url_for('employees') }}" class="block bg-blue-600 text-white p-6 rounded shadow hover:bg-blue-700 transition text-center">
+            <i class="fas fa-users fa-2x mb-2"></i>
+            <h3 class="text-xl font-semibold">Employee Management</h3>
+        </a>
+        <a href="{{ url_for('list_barang') }}" class="block bg-green-600 text-white p-6 rounded shadow hover:bg-green-700 transition text-center">
+            <i class="fas fa-box fa-2x mb-2"></i>
+            <h3 class="text-xl font-semibold">Master Barang</h3>
+        </a>
+        <a href="{{ url_for('list_jenis_simpanan') }}" class="block bg-yellow-600 text-white p-6 rounded shadow hover:bg-yellow-700 transition text-center">
+            <i class="fas fa-coins fa-2x mb-2"></i>
+            <h3 class="text-xl font-semibold">Master Jenis Simpanan</h3>
+        </a>
+        <a href="{{ url_for('list_periode') }}" class="block bg-purple-600 text-white p-6 rounded shadow hover:bg-purple-700 transition text-center">
+            <i class="fas fa-calendar-alt fa-2x mb-2"></i>
+            <h3 class="text-xl font-semibold">Master Periode</h3>
+        </a>
+        <!-- Add more dashboard links here for other modules -->
+    </div>
+</div>
+{% endblock %}
