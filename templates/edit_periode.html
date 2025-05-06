@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}Edit Periode - Simkopkar{% endblock %}
+{% block content %}
+<div class="max-w-3xl mx-auto bg-white p-8 rounded shadow">
+    <h2 class="text-2xl font-semibold mb-6">Edit Periode</h2>
+    <form method="POST" action="{{ url_for('edit_periode', periodeid=periode.PeriodeID) }}">
+        <div class="mb-4">
+            <label for="periodeid" class="block mb-1 font-medium">Periode ID</label>
+            <input type="text" id="periodeid" name="periodeid" value="{{ periode.PeriodeID }}" readonly class="w-full border border-gray-300 rounded px-3 py-2 bg-gray-100" />
+        </div>
+        <div class="mb-4">
+            <label for="periode" class="block mb-1 font-medium">Periode</label>
+            <input type="text" id="periode" name="periode" value="{{ periode.Periode }}" required class="w-full border border-gray-300 rounded px-3 py-2" />
+        </div>
+        <div class="mb-4">
+            <label for="awal" class="block mb-1 font-medium">Awal</label>
+            <input type="date" id="awal" name="awal" value="{{ periode.Awal }}" required class="w-full border border-gray-300 rounded px-3 py-2" />
+        </div>
+        <div class="mb-4">
+            <label for="akhir" class="block mb-1 font-medium">Akhir</label>
+            <input type="date" id="akhir" name="akhir" value="{{ periode.Akhir }}" required class="w-full border border-gray-300 rounded px-3 py-2" />
+        </div>
+        <button type="submit" class="bg-green-600 text-white px-6 py-2 rounded hover:bg-green-700 transition">Simpan</button>
+        <a href="{{ url_for('periodes') }}" class="ml-4 text-gray-600 hover:underline">Batal</a>
+    </form>
+</div>
+{% endblock %}
