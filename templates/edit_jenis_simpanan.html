@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}Edit Jenis Simpanan - Simkopkar{% endblock %}
+{% block content %}
+<div class="max-w-3xl mx-auto bg-white p-8 rounded shadow">
+    <h2 class="text-2xl font-semibold mb-6">Edit Jenis Simpanan</h2>
+    <form method="POST" action="{{ url_for('edit_jenis_simpanan', jenisid=jenis.JenisId) }}">
+        <div class="mb-4">
+            <label for="jenisid" class="block mb-1 font-medium">Jenis ID</label>
+            <input type="text" id="jenisid" name="jenisid" value="{{ jenis.JenisId }}" readonly class="w-full border border-gray-300 rounded px-3 py-2 bg-gray-100" />
+        </div>
+        <div class="mb-4">
+            <label for="keterangan" class="block mb-1 font-medium">Keterangan</label>
+            <input type="text" id="keterangan" name="keterangan" value="{{ jenis.Keterangan }}" required class="w-full border border-gray-300 rounded px-3 py-2" />
+        </div>
+        <div class="mb-4">
+            <label for="bunga" class="block mb-1 font-medium">Bunga</label>
+            <input type="number" id="bunga" name="bunga" value="{{ jenis.Bunga }}" step="0.01" required class="w-full border border-gray-300 rounded px-3 py-2" />
+        </div>
+        <button type="submit" class="bg-green-600 text-white px-6 py-2 rounded hover:bg-green-700 transition">Simpan</button>
+        <a href="{{ url_for('list_jenis_simpanan') }}" class="ml-4 text-gray-600 hover:underline">Batal</a>
+    </form>
+</div>
+{% endblock %}
