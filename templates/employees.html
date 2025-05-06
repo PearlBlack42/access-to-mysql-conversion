@@ -2,14 +2,22 @@
 {% block title %}Employee List - Simkopkar{% endblock %}
 {% block content %}
 <div class="flex justify-between items-center mb-4">
-    <h2 class="text-2xl font-semibold">Employee List</h2>
-    <a href="{{ url_for('add_employee') }}" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition">
+    <h2 class="text-3xl font-bold text-gray-800">Employee List</h2>
+    <a href="{{ url_for('add_employee') }}" class="bg-blue-600 text-white px-6 py-2 rounded shadow hover:bg-blue-700 transition">
         Add Employee
     </a>
 </div>
-<table class="min-w-full bg-white rounded shadow overflow-hidden">
-    <thead class="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
+<div class="mb-4">
+    <input type="text" id="searchInput" name="search" placeholder="Search employees..." class="border border-gray-300 rounded px-4 py-2 w-full max-w-sm" autocomplete="off" />
+</div>
+<form method="POST" action="{{ url_for('delete_employees') }}" id="batchDeleteForm">
+    <div class="overflow-x-auto">
+<table id="tableBody" class="min-w-full bg-white rounded-lg shadow-md overflow-hidden">
+    <thead class="bg-gradient-to-r from-blue-500 to-blue-700 text-white text-sm font-semibold uppercase">
         <tr>
+            <th class="py-3 px-4 text-left">
+                <input type="checkbox" id="selectAll" />
+            </th>
             <th class="py-3 px-6 text-left">NIK</th>
             <th class="py-3 px-6 text-left">Name</th>
             <th class="py-3 px-6 text-left">Department</th>
@@ -17,24 +25,65 @@
             <th class="py-3 px-6 text-left">Gender</th>
             <th class="py-3 px-6 text-left">Join Date</th>
             <th class="py-3 px-6 text-left">Status</th>
+            <th class="py-3 px-6 text-left">Actions</th>
         </tr>
     </thead>
-    <tbody class="text-gray-600 text-sm font-light">
-        {% for emp in employees %}
-        <tr class="border-b border-gray-200 hover:bg-gray-100">
-            <td class="py-3 px-6 text-left whitespace-nowrap">{{ emp.NIK }}</td>
-            <td class="py-3 px-6 text-left">{{ emp.Nama }}</td>
-            <td class="py-3 px-6 text-left">{{ emp.Bagian }}</td>
-            <td class="py-3 px-6 text-left">{{ emp.Jabatan }}</td>
-            <td class="py-3 px-6 text-left">{{ emp.JK }}</td>
-            <td class="py-3 px-6 text-left">{{ emp.TMK }}</td>
-            <td class="py-3 px-6 text-left">{{ 'Active' if emp.Status else 'Inactive' }}</td>
-        </tr>
-        {% else %}
-        <tr>
-            <td colspan="7" class="text-center py-4">No employees found.</td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
+    <tbody id="tableBody" class="text-gray-700 text-sm">
+                {% for emp in employees %}
+                <tr class="border-b border-gray-200 hover:bg-blue-100 transition duration-300">
+                    <td class="py-3 px-4 whitespace-nowrap">
+                        <input type="checkbox" name="selected_ids" value="{{ emp.NIK }}" class="selectItem" />
+                    </td>
+                    <td class="py-3 px-6 whitespace-nowrap font-medium">{{ emp.NIK }}</td>
+                    <td class="py-3 px-6">{{ emp.Nama }}</td>
+                    <td class="py-3 px-6">{{ emp.Bagian }}</td>
+                    <td class="py-3 px-6">{{ emp.Jabatan }}</td>
+                    <td class="py-3 px-6">{{ emp.JK }}</td>
+                    <td class="py-3 px-6">{{ emp.TMK }}</td>
+                    <td class="py-3 px-6">{{ 'Active' if emp.Status else 'Inactive' }}</td>
+                    <td class="py-3 px-6 whitespace-nowrap">
+                        <a href="{{ url_for('edit_employee', nik=emp.NIK) }}" class="text-blue-600 hover:underline mr-2">Edit</a>
+                        <a href="{{ url_for('delete_employee', nik=emp.NIK) }}" onclick="return confirm('Are you sure you want to delete this employee?');" class="text-red-600 hover:underline">Delete</a>
+                    </td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="9" class="text-center py-6 text-gray-500">No employees found.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <div class="mt-4">
+        <button type="submit" onclick="return confirm('Are you sure you want to delete selected employees?');" class="bg-red-600 text-white px-6 py-2 rounded shadow hover:bg-red-700 transition" id="batchDeleteBtn" disabled>Delete Selected</button>
+    </div>
+</form>
+<div class="pagination mt-6 flex justify-center space-x-4" id="paginationControls">
+    {% if page > 1 %}
+    <a href="{{ url_for('employees', page=page-1, search=request.args.get('search', '')) }}" class="px-5 py-2 bg-blue-600 text-white rounded-l shadow hover:bg-blue-700 transition"><</a>
+    {% else %}
+    <span class="px-5 py-2 text-gray-400 cursor-not-allowed rounded-l"><</span>
+    {% endif %}
+    {% if page < total_pages %}
+    <a href="{{ url_for('employees', page=page+1, search=request.args.get('search', '')) }}" class="px-5 py-2 bg-blue-600 text-white rounded-r shadow hover:bg-blue-700 transition">></a>
+    {% else %}
+    <span class="px-5 py-2 text-gray-400 cursor-not-allowed rounded-r">></span>
+    {% endif %}
+</div>
+<div class="mt-6">
+    <a href="{{ url_for('dashboard') }}" class="inline-block text-blue-600 hover:underline">Back to Dashboard</a>
+</div>
+<script>
+document.getElementById('selectAll').addEventListener('change', function() {
+    const checked = this.checked;
+    document.querySelectorAll('.selectItem').forEach(cb => cb.checked = checked);
+    document.getElementById('batchDeleteBtn').disabled = !checked;
+});
+document.querySelectorAll('.selectItem').forEach(cb => {
+    cb.addEventListener('change', function() {
+        const anyChecked = Array.from(document.querySelectorAll('.selectItem')).some(cb => cb.checked);
+        document.getElementById('batchDeleteBtn').disabled = !anyChecked;
+    });
+});
+</script>
 {% endblock %}
