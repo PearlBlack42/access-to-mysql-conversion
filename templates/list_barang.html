@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% block title %}Master Barang - Simkopkar{% endblock %}
+{% block content %}
+<div class="max-w-4xl mx-auto bg-white p-8 rounded shadow-lg">
+    <h2 class="text-3xl font-bold mb-6 text-gray-800">Master Barang (Items)</h2>
+    <a href="{{ url_for('add_barang') }}" class="inline-block mb-4 bg-blue-600 text-white px-6 py-2 rounded shadow hover:bg-blue-700 transition">
+        Add New Barang
+    </a>
+    <div class="mb-4">
+        <input type="text" id="searchInput" data-entity="barang" name="search" placeholder="Search barang..." class="border border-gray-300 rounded px-4 py-2 w-full max-w-sm" autocomplete="off" />
+    </div>
+    <div class="overflow-x-auto">
+        <table class="min-w-full bg-white rounded-lg shadow-md overflow-hidden">
+            <thead class="bg-gradient-to-r from-blue-500 to-blue-700 text-white text-sm font-semibold uppercase">
+                <tr>
+                    <th class="py-3 px-6 text-left">Kode Barang</th>
+                    <th class="py-3 px-6 text-left">Nama Barang</th>
+                    <th class="py-3 px-6 text-left">Satuan</th>
+                    <th class="py-3 px-6 text-left">Harga</th>
+                </tr>
+            </thead>
+            <tbody id="tableBody" class="text-gray-700 text-sm">
+                {% for barang in barangs %}
+                <tr class="border-b border-gray-200 hover:bg-blue-100 transition duration-300">
+                    <td class="py-3 px-6 whitespace-nowrap font-medium">{{ barang.KodeBarang }}</td>
+                    <td class="py-3 px-6">{{ barang.NamaBarang }}</td>
+                    <td class="py-3 px-6">{{ barang.Satuan }}</td>
+                    <td class="py-3 px-6">{{ barang.Harga }}</td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="4" class="text-center py-6 text-gray-500">No barang found.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <div id="paginationControls" class="pagination mt-6 flex justify-center space-x-4">
+        {% if page > 1 %}
+        <a href="{{ url_for('list_barang', page=page-1) }}" class="px-5 py-2 bg-blue-600 text-white rounded-l shadow hover:bg-blue-700 transition"><</a>
+        {% else %}
+        <span class="px-5 py-2 text-gray-400 cursor-not-allowed rounded-l"><</span>
+        {% endif %}
+        {% if page < total_pages %}
+        <a href="{{ url_for('list_barang', page=page+1) }}" class="px-5 py-2 bg-blue-600 text-white rounded-r shadow hover:bg-blue-700 transition">></a>
+        {% else %}
+        <span class="px-5 py-2 text-gray-400 cursor-not-allowed rounded-r">></span>
+        {% endif %}
+    </div>
+<div class="mt-6">
+    <a href="{{ url_for('dashboard') }}" class="inline-block text-blue-600 hover:underline">Back to Dashboard</a>
+</div>
+</div>
+{% endblock %}
