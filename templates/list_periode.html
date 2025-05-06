@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block title %}Daftar Periode - Simkopkar{% endblock %}
+{% block content %}
+<div class="flex justify-between items-center mb-4">
+    <h2 class="text-2xl font-semibold">Daftar Periode</h2>
+    <input type="text" id="searchInput" data-entity="periode" placeholder="Cari periode..." class="border border-gray-300 rounded px-4 py-2 w-full max-w-sm" autocomplete="off" />
+    <a href="{{ url_for('add_periode') }}" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition ml-4">
+        Tambah Periode
+    </a>
+</div>
+<table id="tableBody" class="min-w-full bg-white rounded shadow overflow-hidden">
+    <thead class="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
+        <tr>
+            <th class="py-3 px-6 text-left">Periode ID</th>
+            <th class="py-3 px-6 text-left">Periode</th>
+            <th class="py-3 px-6 text-left">Awal</th>
+            <th class="py-3 px-6 text-left">Akhir</th>
+            <th class="py-3 px-6 text-left">Aksi</th>
+        </tr>
+    </thead>
+    <tbody id="tableBody" class="text-gray-600 text-sm font-light">
+        {% for periode in periodes %}
+        <tr class="border-b border-gray-200 hover:bg-gray-100">
+            <td class="py-3 px-6 text-left whitespace-nowrap">{{ periode.PeriodeID }}</td>
+            <td class="py-3 px-6 text-left">{{ periode.Periode }}</td>
+            <td class="py-3 px-6 text-left">{{ periode.Awal }}</td>
+            <td class="py-3 px-6 text-left">{{ periode.Akhir }}</td>
+            <td class="py-3 px-6 text-left">
+                <a href="{{ url_for('edit_periode', periodeid=periode.PeriodeID) }}" class="text-blue-600 hover:underline mr-2">Edit</a>
+                <form action="{{ url_for('delete_periode', periodeid=periode.PeriodeID) }}" method="POST" class="inline" onsubmit="return confirm('Yakin ingin menghapus periode ini?');">
+                    <button type="submit" class="text-red-600 hover:underline">Hapus</button>
+                </form>
+            </td>
+        </tr>
+        {% else %}
+        <tr>
+            <td colspan="5" class="text-center py-4">Tidak ada data periode.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<div id="paginationControls" class="pagination mt-6 flex justify-center space-x-4"></div>
+{% endblock %}
