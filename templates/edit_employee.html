@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+{% block title %}Edit Employee - Simkopkar{% endblock %}
+{% block content %}
+<div class="max-w-3xl mx-auto bg-white p-8 rounded shadow">
+    <h2 class="text-2xl font-semibold mb-6">Edit Employee</h2>
+    <form method="POST" action="{{ url_for('edit_employee', nik=employee.NIK) }}">
+        <div class="grid grid-cols-2 gap-6">
+            <div>
+                <label for="nik" class="block mb-1 font-medium">NIK</label>
+                <input type="text" id="nik" name="nik" value="{{ employee.NIK }}" disabled class="w-full border border-gray-300 rounded px-3 py-2 bg-gray-100 cursor-not-allowed" />
+            </div>
+            <div>
+                <label for="nama" class="block mb-1 font-medium">Name</label>
+                <input type="text" id="nama" name="nama" value="{{ employee.Nama }}" required class="w-full border border-gray-300 rounded px-3 py-2" />
+            </div>
+            <div>
+                <label for="bagian" class="block mb-1 font-medium">Department (Bagian)</label>
+                <input type="text" id="bagian" name="bagian" value="{{ employee.Bagian }}" class="w-full border border-gray-300 rounded px-3 py-2" />
+            </div>
+            <div>
+                <label for="jabatan" class="block mb-1 font-medium">Position (Jabatan)</label>
+                <input type="text" id="jabatan" name="jabatan" value="{{ employee.Jabatan }}" class="w-full border border-gray-300 rounded px-3 py-2" />
+            </div>
+            <div>
+                <label for="jk" class="block mb-1 font-medium">Gender (JK)</label>
+                <select id="jk" name="jk" class="w-full border border-gray-300 rounded px-3 py-2">
+                    <option value="L" {% if employee.JK == 'L' %}selected{% endif %}>Male</option>
+                    <option value="P" {% if employee.JK == 'P' %}selected{% endif %}>Female</option>
+                </select>
+            </div>
+            <div>
+                <label for="tmk" class="block mb-1 font-medium">Join Date (TMK)</label>
+                <input type="date" id="tmk" name="tmk" value="{{ employee.TMK }}" class="w-full border border-gray-300 rounded px-3 py-2" />
+            </div>
+            <div>
+                <label for="iuran_wajib" class="block mb-1 font-medium">Mandatory Contribution (Iuran Wajib)</label>
+                <input type="number" id="iuran_wajib" name="iuran_wajib" step="0.01" value="{{ employee.IuranWajib }}" class="w-full border border-gray-300 rounded px-3 py-2" />
+            </div>
+            <div>
+                <label for="tgl_keluar" class="block mb-1 font-medium">Exit Date (Tgl Keluar)</label>
+                <input type="date" id="tgl_keluar" name="tgl_keluar" value="{{ employee.TglKeluar }}" class="w-full border border-gray-300 rounded px-3 py-2" />
+            </div>
+            <div class="flex items-center space-x-4">
+                <label class="font-medium">Status</label>
+                <input type="checkbox" id="status" name="status" {% if employee.Status %}checked{% endif %} />
+            </div>
+            <div class="flex items-center space-x-4">
+                <label class="font-medium">Special (Khusus)</label>
+                <input type="checkbox" id="khusus" name="khusus" {% if employee.Khusus %}checked{% endif %} />
+            </div>
+            <div>
+                <label for="max_plafon" class="block mb-1 font-medium">Max Plafon</label>
+                <input type="number" id="max_plafon" name="max_plafon" step="0.01" value="{{ employee.MaxPlafon }}" class="w-full border border-gray-300 rounded px-3 py-2" />
+            </div>
+            <div>
+                <label for="max_plafon_sembako" class="block mb-1 font-medium">Max Plafon Sembako</label>
+                <input type="number" id="max_plafon_sembako" name="max_plafon_sembako" step="0.01" value="{{ employee.MaxPlafonSembako }}" class="w-full border border-gray-300 rounded px-3 py-2" />
+            </div>
+        </div>
+        <div class="mt-6">
+            <button type="submit" class="bg-green-600 text-white px-6 py-2 rounded hover:bg-green-700 transition">Save Changes</button>
+            <a href="{{ url_for('employees') }}" class="ml-4 text-gray-600 hover:underline">Cancel</a>
+        </div>
+    </form>
+</div>
+{% endblock %}
