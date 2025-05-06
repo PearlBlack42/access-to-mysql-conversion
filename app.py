@@ -344,7 +344,7 @@ def add_jenis_simpanan():
         return redirect(url_for('list_jenis_simpanan'))
     return render_template('add_jenis_simpanan.html')
 
-@app.route('/add_periode', methods=['GET', 'POST'])
+@app.route('/periode/add', methods=['GET', 'POST'])
 def add_periode():
     if 'user_id' not in session:
         return redirect(url_for('login'))
@@ -523,3 +523,4 @@ def delete_jenis_simpanan(jenisid):
     return redirect(url_for('list_jenis_simpanan'))
 
 if __name__ == '__main__':
+    app.run(debug=True)
