@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block title %}Daftar Jenis Simpanan - Simkopkar{% endblock %}
+{% block content %}
+<div class="flex justify-between items-center mb-4">
+    <h2 class="text-2xl font-semibold">Daftar Jenis Simpanan</h2>
+    <input type="text" id="searchInput" data-entity="jenis_simpanan" placeholder="Cari jenis simpanan..." class="border border-gray-300 rounded px-4 py-2 w-full max-w-sm" autocomplete="off" />
+    <a href="{{ url_for('add_jenis_simpanan') }}" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition ml-4">
+        Tambah Jenis Simpanan
+    </a>
+</div>
+<table id="tableBody" class="min-w-full bg-white rounded shadow overflow-hidden">
+    <thead class="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
+        <tr>
+            <th class="py-3 px-6 text-left">Jenis ID</th>
+            <th class="py-3 px-6 text-left">Keterangan</th>
+            <th class="py-3 px-6 text-left">Bunga</th>
+            <th class="py-3 px-6 text-left">Aksi</th>
+        </tr>
+    </thead>
+    <tbody id="tableBody" class="text-gray-600 text-sm font-light">
+        {% for jenis in jenis_simpanans %}
+        <tr class="border-b border-gray-200 hover:bg-gray-100">
+            <td class="py-3 px-6 text-left whitespace-nowrap">{{ jenis.JenisId }}</td>
+            <td class="py-3 px-6 text-left">{{ jenis.Keterangan }}</td>
+            <td class="py-3 px-6 text-left">{{ jenis.Bunga }}</td>
+            <td class="py-3 px-6 text-left">
+                <a href="{{ url_for('edit_jenis_simpanan', jenisid=jenis.JenisId) }}" class="text-blue-600 hover:underline mr-2">Edit</a>
+                <form action="{{ url_for('delete_jenis_simpanan', jenisid=jenis.JenisId) }}" method="POST" class="inline" onsubmit="return confirm('Yakin ingin menghapus jenis simpanan ini?');">
+                    <button type="submit" class="text-red-600 hover:underline">Hapus</button>
+                </form>
+            </td>
+        </tr>
+        {% else %}
+        <tr>
+            <td colspan="4" class="text-center py-4">Tidak ada data jenis simpanan.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<div id="paginationControls" class="pagination mt-6 flex justify-center space-x-4"></div>
+{% endblock %}
